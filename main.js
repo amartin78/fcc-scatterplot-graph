@@ -4,6 +4,14 @@ d3.json('https://raw.githubusercontent.com/freeCodeCamp/ProjectReferenceData/mas
         scatterPlotGraph(result);
     });
 
+function time(t) {
+    t = t.split(':');
+    let time = new Date();
+    time.setMinutes(t[0]);
+    time.setSeconds(t[1]);
+    
+    return time.getTime();
+}
 
 function scatterPlotGraph(dataset) {
 
@@ -17,16 +25,24 @@ function scatterPlotGraph(dataset) {
     const padding = 100;
 
     const xScale = d3.scaleLinear()
-                    .domain([0,1000])
+                    .domain([ d3.min(dataset, (d) => d['Year'] - 1), 
+                              d3.max(dataset, (d) => d['Year']) + 1 ])
                     .range([padding, width - padding]);
 
-    const yScale = d3.scaleLinear()
-                    .domain([0,1000])
+    const yScale = d3.scaleTime()
+                    .domain([ d3.max(dataset, (d) => time(d['Time'])),
+                              d3.min(dataset, (d) => time(d['Time'])) ])
                     .range([height - padding, padding]);
 
-    const xAxis = d3.axisBottom(xScale);
+    const xAxis = d3.axisBottom(xScale)
+                    .tickFormat((d) => {
+                        return d;
+                    });
 
-    const yAxis = d3.axisLeft(yScale);
+    const yAxis = d3.axisLeft(yScale)
+                    .tickFormat((d) => {
+                        return d3.timeFormat('%M:%S')(d);
+                    });
 
     const svg = d3.select('body')
                     .append('svg')
@@ -43,7 +59,18 @@ function scatterPlotGraph(dataset) {
         .attr('transform', 'translate(' + padding + ', 0)')
         .call(yAxis)
 
-    
+    svg.selectAll('circle')
+        .data(dataset)
+        .enter()
+        .append('circle')
+        .attr('class', 'dot')
+        .attr('data-xvalue', (d) => d['Year'])
+        .attr('data-yvalue', (d) => {
+            return new Date(time(d['Time'])).toISOString()
+        })
+        .attr('r', '6')
+        .attr('cx', (d) => xScale(d['Year']))
+        .attr('cy', (d) => yScale(time(d['Time'])))
     
 }
 
