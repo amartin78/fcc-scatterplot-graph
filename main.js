@@ -63,6 +63,12 @@ function scatterPlotGraph(dataset) {
                       .style('position', 'absolute')
                       .style('visibility', 'hidden')
 
+    svg.append('text')
+       .attr('transform', 'rotate(-90)')
+       .attr('x', -310)
+       .attr('y', 40)
+       .text('Time in Minutes')
+
     svg.append('g')
         .attr('id', 'x-axis')
         .attr('transform', 'translate(0,' + (height - padding) + ')')
@@ -85,8 +91,7 @@ function scatterPlotGraph(dataset) {
         .attr('r', '7')
         .attr('cx', (d) => xScale(d['Year']))
         .attr('cy', (d) => yScale(time(d['Time'])))
-        .style('fill', 'cadetblue')
-        .style('opacity', 0.8)
+        .style('fill', (d) => d['Doping'].includes('Confessed')  ? 'orange' : 'cadetblue')
         .on('mouseover', function(d) {
             tooltip.attr('data-year', d['Year'])
             tooltip.style('visibility', 'visible')
@@ -100,13 +105,21 @@ function scatterPlotGraph(dataset) {
             tooltip.style('visibility', 'hidden')
         })
         
-    d3.select('body')
+    d3.select('svg')
+        .append('rect')
+        .attr('width', '1rem')
+        .attr('height', '1rem')
+        .attr('x', 766)
+        .attr('y', 187)
+        .style('fill', 'orange')
+
+    d3.select('svg')
         .append('text')
         .attr('id', 'legend')
-        .attr('x', 300)
-        .attr('y', 260)
-        .text('some aditional info...')
-
+        .attr('x', 790)
+        .attr('y', 200)
+        .text('Confessed Later Cases')
+        
 }
 
 
