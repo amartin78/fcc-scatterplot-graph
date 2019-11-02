@@ -115,10 +115,16 @@ function scatterPlotGraph(dataset) {
 
     d3.select('svg')
         .append('text')
-        .attr('id', 'legend')
-        .attr('x', 790)
-        .attr('y', 200)
-        .text('Confessed Later Cases')
+            .attr('id', 'legend')
+            .attr('x', 790)
+            .attr('y', 200)
+            .text('Cases that were later')
+    d3.select('svg')
+        .append('text')
+            .attr('id', 'legend')
+            .attr('x', 792)
+            .attr('y', 216)
+            .text(' confessed')
         
 }
 
