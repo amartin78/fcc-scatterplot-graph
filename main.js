@@ -98,8 +98,8 @@ function scatterPlotGraph(dataset) {
             tooltip.html( d['Name'] + ' - ' + d['Nationality'] + '<br>' 
                         + d['Year'] + ' - ' + 'Time ' + d['Time'] + '<hr>'
                         + d['Doping'])
-                   .style('top', padding + yScale(time(d['Time'])) + 3)
-                   .style('left', padding + xScale(d['Year']) + 52)
+                   .style('top', (padding + yScale(time(d['Time'])) + 3) + 'px')
+                   .style('left', (padding + xScale(d['Year']) + 52) + 'px')
         })
         .on('mouseout', (d) => {
             tooltip.style('visibility', 'hidden')
